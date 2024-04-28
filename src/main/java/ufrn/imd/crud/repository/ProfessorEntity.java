@@ -1,19 +1,19 @@
 package ufrn.imd.crud.repository;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.With;
+import lombok.*;
 import ufrn.imd.crud.domain.Genero;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "professores")
 @Builder
 @Getter
 @With
-public class ProfessorEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public final class ProfessorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,7 +23,7 @@ public class ProfessorEntity {
     private Integer matricula;
     private Genero genero;
     private String departamento;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
     private Float salario;
     private String disciplinaAssociada;
 }

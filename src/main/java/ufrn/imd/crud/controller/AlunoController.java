@@ -68,7 +68,7 @@ final class AlunoController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Object> deleteAluno(@RequestHeader("logical") final Boolean logical, @PathVariable final Long id) {
+    ResponseEntity<Object> deleteAluno(@RequestHeader("Logical") final Boolean logical, @PathVariable final Long id) {
         ResponseEntity<Object> result;
         if (logical) {
             result = deleteLogical(id);

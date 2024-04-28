@@ -43,7 +43,7 @@ final class ProfessorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ProfessorDto postProfessor(@RequestBody @Valid final ProfessorDto professorDto) {
-        final var professorEntity = ProfessorMapper.toProfessorEntity(professorDto);
+        final var professorEntity = ProfessorMapper.toProfessorEntity(professorDto, true);
         repository.save(professorEntity);
         return ProfessorMapper.toProfessorDto(professorEntity);
     }
@@ -58,7 +58,7 @@ final class ProfessorController {
                 .findById(toUpdate.getId())
                 .map(ProfessorMapper::toProfessorDto)
                 .map(saved -> ProfessorMerger.merge(saved, toUpdate))
-                .map(ProfessorMapper::toProfessorEntity)
+                .map(toSave -> ProfessorMapper.toProfessorEntity(toSave, false))
                 .map(repository::save)
                 .map(ProfessorMapper::toProfessorDto)
                 .map(saved -> ResponseEntity.ok().body(saved))

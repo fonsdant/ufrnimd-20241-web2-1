@@ -18,17 +18,21 @@ final class ProfessorMapper {
             .build();
     }
 
-    static ProfessorEntity toProfessorEntity(final ProfessorDto professorDto) {
-        return ProfessorEntity
-            .builder()
-            .nome(professorDto.getNome())
-            .cpf(professorDto.getCpf())
-            .matricula(professorDto.getMatricula())
-            .genero(professorDto.getGenero())
-            .departamento(professorDto.getDepartamento())
-            .dataNascimento(professorDto.getDataNascimento())
-            .salario(professorDto.getSalario())
-            .disciplinaAssociada(professorDto.getDisciplinaAssociada())
-            .build();
+    static ProfessorEntity toProfessorEntity(final ProfessorDto professorDto, final Boolean generateId) {
+        final var professorEntityBuilder =
+            ProfessorEntity
+                .builder()
+                .nome(professorDto.getNome())
+                .cpf(professorDto.getCpf())
+                .matricula(professorDto.getMatricula())
+                .genero(professorDto.getGenero())
+                .departamento(professorDto.getDepartamento())
+                .dataNascimento(professorDto.getDataNascimento())
+                .salario(professorDto.getSalario())
+                .disciplinaAssociada(professorDto.getDisciplinaAssociada());
+        if (!generateId) {
+            professorEntityBuilder.id(professorDto.getId());
+        }
+        return professorEntityBuilder.build();
     }
 }

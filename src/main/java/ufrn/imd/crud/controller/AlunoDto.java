@@ -6,12 +6,12 @@ import lombok.With;
 import org.hibernate.validator.constraints.br.CPF;
 import ufrn.imd.crud.domain.Genero;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Builder
 @Getter
 @With
-class AlunoDto {
+final class AlunoDto {
     private Long id;
     private String nome;
     @CPF
@@ -19,5 +19,5 @@ class AlunoDto {
     private Integer matricula;
     private Genero genero;
     private String curso;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 }

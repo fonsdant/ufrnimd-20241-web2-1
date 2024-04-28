@@ -1,27 +1,27 @@
 package ufrn.imd.crud.repository;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.With;
+import lombok.*;
 import ufrn.imd.crud.domain.Genero;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "alunos")
 @Builder
 @Getter
 @With
-public class AlunoEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public final class AlunoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    Boolean ativo;
-    String nome;
-    String cpf;
-    Integer matricula;
-    Genero genero;
-    String curso;
-    Date dataNascimento;
+    private Long id;
+    private Boolean ativo;
+    private String nome;
+    private String cpf;
+    private Integer matricula;
+    private Genero genero;
+    private String curso;
+    private LocalDate dataNascimento;
 }
