@@ -5,63 +5,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ufrn.imd.crud.repository.AlunoEntity;
-import ufrn.imd.crud.repository.AlunoRepository;
+import ufrn.imd.crud.repository.ProfessorEntity;
+import ufrn.imd.crud.repository.ProfessorRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/alunos")
-final class AlunoController {
-    private final AlunoRepository repository;
+@RequestMapping("/professores")
+final class ProfessorController {
+    private final ProfessorRepository repository;
 
     @Autowired
-    AlunoController(final AlunoRepository repository) {
+    ProfessorController(final ProfessorRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    Collection<AlunoDto> getAll() {
+    Collection<ProfessorDto> getAll() {
         return repository
             .findAll()
             .stream()
-            .map(AlunoMapper::toAlunoDto)
+            .map(ProfessorMapper::toProfessorDto)
             .collect(Collectors.toSet());
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<AlunoDto> getById(@PathVariable final Long id) {
+    ResponseEntity<ProfessorDto> getById(@PathVariable final Long id) {
         return repository
             .findById(id)
-            .map(AlunoMapper::toAlunoDto)
-            .map(alunoDto -> ResponseEntity.ok().body(alunoDto))
+            .map(ProfessorMapper::toProfessorDto)
+            .map(professorDto -> ResponseEntity.ok().body(professorDto))
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    AlunoDto postAluno(@RequestBody @Valid final AlunoDto alunoDto) {
-        final var alunoEntity = AlunoMapper.toAlunoEntity(alunoDto);
-        repository.save(alunoEntity);
-        return AlunoMapper.toAlunoDto(alunoEntity);
+    ProfessorDto postProfessor(@RequestBody @Valid final ProfessorDto professorDto) {
+        final var professorEntity = ProfessorMapper.toProfessorEntity(professorDto);
+        repository.save(professorEntity);
+        return ProfessorMapper.toProfessorDto(professorEntity);
     }
 
     @PutMapping
-    ResponseEntity<AlunoDto> putAluno(@RequestBody @Valid final AlunoDto toUpdate) {
-        ResponseEntity<AlunoDto> result;
+    ResponseEntity<ProfessorDto> putProfessor(@RequestBody @Valid final ProfessorDto toUpdate) {
+        ResponseEntity<ProfessorDto> result;
         if (toUpdate.getId() == null) {
             result = ResponseEntity.badRequest().build();
         } else {
             result = repository
                 .findById(toUpdate.getId())
-                .map(AlunoMapper::toAlunoDto)
-                .map(saved -> AlunoMerger.merge(saved, toUpdate))
-                .map(AlunoMapper::toAlunoEntity)
+                .map(ProfessorMapper::toProfessorDto)
+                .map(saved -> ProfessorMerger.merge(saved, toUpdate))
+                .map(ProfessorMapper::toProfessorEntity)
                 .map(toSave -> {
                     repository.save(toSave);
-                    return ResponseEntity.ok().body(AlunoMapper.toAlunoDto(toSave));
+                    return ResponseEntity.ok().body(ProfessorMapper.toProfessorDto(toSave));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
         }
@@ -69,7 +69,10 @@ final class AlunoController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Object> deleteAluno(@RequestHeader("logical") final Boolean logical, @PathVariable final Long id) {
+    ResponseEntity<Object> deleteProfessor(
+        @RequestHeader("logical") final Boolean logical,
+        @PathVariable final Long id
+    ) {
         ResponseEntity<Object> result;
         if (logical) {
             result = deleteLogical(id);
@@ -82,17 +85,17 @@ final class AlunoController {
     private ResponseEntity<Object> deleteLogical(final Long id) {
         return repository
             .findById(id)
-            .map(alunoEntity -> alunoEntity.withAtivo(false))
+            .map(professorEntity -> professorEntity.withAtivo(false))
             .map(repository::save)
-            .map(AlunoMapper::toAlunoDto)
-            .map(alunoDto -> ResponseEntity.ok().build())
+            .map(ProfessorMapper::toProfessorDto)
+            .map(professorDto -> ResponseEntity.ok().build())
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     private ResponseEntity<Object> deletePhysical(final Long id) {
         return repository
             .findById(id)
-            .map(AlunoEntity::getId)
+            .map(ProfessorEntity::getId)
             .map(foundId -> {
                 repository.deleteById(foundId);
                 return ResponseEntity.ok().build();

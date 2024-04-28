@@ -3,27 +3,28 @@ package ufrn.imd.crud.controller;
 import ufrn.imd.crud.repository.AlunoEntity;
 
 final class AlunoMapper {
-    static AlunoDto toAlunoDTO(final AlunoEntity alunoEntity) {
-        return new AlunoDto.builder.(
-            alunoEntity.id(),
-            alunoEntity.nome(),
-            alunoEntity.cpf(),
-            alunoEntity.matricula(),
-            alunoEntity.genero(),
-            alunoEntity.curso(),
-            alunoEntity.dataNascimento()
-        );
+    static AlunoDto toAlunoDto(final AlunoEntity alunoEntity) {
+        return AlunoDto
+            .builder()
+            .id(alunoEntity.getId())
+            .nome(alunoEntity.getNome())
+            .cpf(alunoEntity.getCpf())
+            .matricula(alunoEntity.getMatricula())
+            .genero(alunoEntity.getGenero())
+            .curso(alunoEntity.getCurso())
+            .dataNascimento(alunoEntity.getDataNascimento())
+            .build();
     }
 
     static AlunoEntity toAlunoEntity(final AlunoDto alunoDto) {
-        return new AlunoEntity(
-            alunoDto.id(),
-            alunoDto.nome(),
-            alunoDto.cpf(),
-            alunoDto.matricula(),
-            alunoDto.genero(),
-            alunoDto.curso(),
-            alunoDto.dataNascimento()
-        );
+        return AlunoEntity
+            .builder()
+            .nome(alunoDto.getNome())
+            .cpf(alunoDto.getCpf())
+            .matricula(alunoDto.getMatricula())
+            .genero(alunoDto.getGenero())
+            .curso(alunoDto.getCurso())
+            .dataNascimento(alunoDto.getDataNascimento())
+            .build();
     }
 }
