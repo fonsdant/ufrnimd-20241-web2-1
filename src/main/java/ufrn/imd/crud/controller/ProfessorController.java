@@ -59,10 +59,9 @@ final class ProfessorController {
                 .map(ProfessorMapper::toProfessorDto)
                 .map(saved -> ProfessorMerger.merge(saved, toUpdate))
                 .map(ProfessorMapper::toProfessorEntity)
-                .map(toSave -> {
-                    repository.save(toSave);
-                    return ResponseEntity.ok().body(ProfessorMapper.toProfessorDto(toSave));
-                })
+                .map(repository::save)
+                .map(ProfessorMapper::toProfessorDto)
+                .map(saved -> ResponseEntity.ok().body(saved))
                 .orElseGet(() -> ResponseEntity.notFound().build());
         }
         return result;

@@ -59,10 +59,9 @@ final class AlunoController {
                 .map(AlunoMapper::toAlunoDto)
                 .map(saved -> AlunoMerger.merge(saved, toUpdate))
                 .map(AlunoMapper::toAlunoEntity)
-                .map(toSave -> {
-                    repository.save(toSave);
-                    return ResponseEntity.ok().body(AlunoMapper.toAlunoDto(toSave));
-                })
+                .map(repository::save)
+                .map(AlunoMapper::toAlunoDto)
+                .map(saved -> ResponseEntity.ok().body(saved))
                 .orElseGet(() -> ResponseEntity.notFound().build());
         }
         return result;
